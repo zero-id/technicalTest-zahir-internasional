@@ -43,7 +43,8 @@ func (r *repository) FindContacts(offset, limit int) ([]models.Contact, int64, e
 
 func (r *repository) GetContact(ID string) (models.Contact, error) {
 	var contact models.Contact
-	err := r.db.First(&contact, ID).Error
+	// err := r.db.First(&contact, ID).Error
+  err := r.db.First(&contact, "id = ?", ID).Error
 
 	return contact, err
 }
@@ -63,6 +64,7 @@ func (r *repository) UpdateContact(contact models.Contact) (models.Contact, erro
 // Write this code
 func (r *repository) DeleteContact(contact models.Contact, ID string) (models.Contact, error) {
 	err := r.db.Delete(&contact).Error
+  // err := r.db.First(&contact, "id = ?", ID).Error
 
 	return contact, err
 }
