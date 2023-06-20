@@ -8,10 +8,10 @@ import (
 
 type ContactRepository interface {
 	FindContacts(offset, limit int) ([]models.Contact, int64, error)
-	GetContact(ID int) (models.Contact, error)
+	GetContact(ID string) (models.Contact, error)
 	CreateContact(contact models.Contact) (models.Contact, error)
 	UpdateContact(contact models.Contact) (models.Contact, error)
-	DeleteContact(contact models.Contact, ID int) (models.Contact, error)
+	DeleteContact(contact models.Contact, ID string) (models.Contact, error)
 }
 
 type repository struct {
@@ -41,7 +41,7 @@ func (r *repository) FindContacts(offset, limit int) ([]models.Contact, int64, e
 	return contacts, total, nil
 }
 
-func (r *repository) GetContact(ID int) (models.Contact, error) {
+func (r *repository) GetContact(ID string) (models.Contact, error) {
 	var contact models.Contact
 	err := r.db.First(&contact, ID).Error
 
@@ -61,7 +61,7 @@ func (r *repository) UpdateContact(contact models.Contact) (models.Contact, erro
 }
 
 // Write this code
-func (r *repository) DeleteContact(contact models.Contact, ID int) (models.Contact, error) {
+func (r *repository) DeleteContact(contact models.Contact, ID string) (models.Contact, error) {
 	err := r.db.Delete(&contact).Error
 
 	return contact, err

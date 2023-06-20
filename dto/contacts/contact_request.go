@@ -8,7 +8,6 @@ type CreateContactRequest struct {
 }
 
 type UpdateContactRequest struct {
-	ID     int    `json:"id"`
 	Name   string `json:"name" form:"name"`
 	Gender string `json:"gender" form:"gender"`
 	Phone  string `json:"phone" form:"phone"`

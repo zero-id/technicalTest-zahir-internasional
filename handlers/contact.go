@@ -11,6 +11,7 @@ import (
 	"strconv"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
@@ -23,10 +24,9 @@ func HandlerContact(ContactRepository repositories.ContactRepository) *handler {
 }
 
 func (h *handler) FindContacts(c echo.Context) error {
-	// Mengambil query parameter
+
 	page, _ := strconv.Atoi(c.QueryParam("page"))
 
-	// Set default values if page or perPage is invalid or not provided
 	if page <= 0 {
 		page = 1
 	}
@@ -85,7 +85,7 @@ func (h *handler) FindContacts(c echo.Context) error {
 }
 
 func (h *handler) GetContact(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
+	id := c.Param("id")
 
 	contact, err := h.ContactRepository.GetContact(id)
 	if err != nil {
@@ -118,6 +118,7 @@ func (h *handler) CreateContact(c echo.Context) error {
 	}
 
 	contact := models.Contact{
+		ID:     uuid.New().String(),
 		Name:   request.Name,
 		Gender: request.Gender,
 		Phone:  request.Phone,
@@ -143,7 +144,7 @@ func (h *handler) UpdateContact(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
 	}
 
-	id, _ := strconv.Atoi(c.Param("id"))
+	id := c.Param("id")
 
 	contact, err := h.ContactRepository.GetContact(id)
 
@@ -176,7 +177,7 @@ func (h *handler) UpdateContact(c echo.Context) error {
 }
 
 func (h *handler) DeleteContact(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
+	id := c.Param("id")
 
 	contact, err := h.ContactRepository.GetContact(id)
 	if err != nil {
